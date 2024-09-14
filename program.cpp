@@ -18,6 +18,8 @@ map<string, string> global_variable_list;
 
 
 void initialize_knowledge_base();
+void diagnosis();
+void treatment();
 
 int main(){
 
@@ -39,3 +41,5 @@ int main(){
 
     return 0;
 }
+
+
