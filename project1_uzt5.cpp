@@ -3,6 +3,10 @@
 #include <vector>
 #include <map>
 #include <queue>
+using namespace std;
+
+// To-DO -> 
+// Use namespace std
 
 // Structure to represent a variable
 struct Variable {
