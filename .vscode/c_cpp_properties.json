@@ -1,17 +1,16 @@
 {
     "configurations": [
         {
-            "name": "windows-gcc-x64",
+            "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "C:/MinGW/include"
             ],
-            "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Professional/VC/Tools/Llvm/x64/bin/clang++.exe",
-            "cStandard": "${default}",
-            "cppStandard": "${default}",
-            "intelliSenseMode": "${default}",
-            "compilerArgs": [
-                ""
-            ]
+            "defines": [],
+            "compilerPath": "C:/MinGW/bin/g++.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
         }
     ],
     "version": 4
