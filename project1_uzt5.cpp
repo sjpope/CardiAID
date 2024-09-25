@@ -37,7 +37,6 @@ vector<string> derivedConclusions; // For forward chaining
 queue<string> globalConclusionQueue; // For forward chaining
 
 // Function prototypes
-void initializeDiagnosis();
 void initializeTreatment();
 void backwardChaining();
 void processFC(string diagnosis);
@@ -67,7 +66,7 @@ int main() {
     cout << "\nCardiAID: " << "" << "\n" << endl;
 
     // Identify the Goal variable (the variable whose value needs to be determined)
-    initializeDiagnosis();
+    diagnosis();
     backwardChaining();
 
     // After processing, check if diagnosis is instantiated
@@ -141,6 +140,8 @@ void diagnosis() {
 
     // Build conclusionMap for backward chaining
     for (int i = 0; i < diagnosisRuleList.size(); ++i) {
+        // map<string, vector<int>> conclusionMap; // Maps conclusion variable to rule numbers
+
         conclusionMap[diagnosisRuleList[i].conclusion.first].push_back(i);
     }
 

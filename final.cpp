@@ -47,7 +47,6 @@ void processBC(string variable);
 bool searchConBC(string variable);
 int ruleToClauseBC(int ruleNumber);
 bool validateRi(const Rule& rule);
-bool validateRi(const Rule& rule);
 
 // Used for both algorithms
 void updateVL(const vector<pair<string, string>>& conditions);
@@ -82,38 +81,99 @@ int main() {
 // Populate diagnosis and treatment rules
 void initialize_knowledge_base() {
     // Diagnosis rules (Backward Chaining)
-    diagnosisRuleList.push_back(Rule(1, {{"chest_pain", "yes"}}, {"go_to_node", "2"}));
-    diagnosisRuleList.push_back(Rule(2, {{"chest_pain", "no"}}, {"go_to_node", "3"}));
-    diagnosisRuleList.push_back(Rule(3, {{"shortness_of_breath", "yes"}}, {"go_to_node", "4"}));
-    diagnosisRuleList.push_back(Rule(4, {{"shortness_of_breath", "no"}}, {"go_to_node", "5"}));
-    diagnosisRuleList.push_back(Rule(5, {{"dizziness_or_fainting", "yes"}}, {"go_to_node", "6"}));
-    diagnosisRuleList.push_back(Rule(6, {{"dizziness_or_fainting", "no"}}, {"go_to_node", "7"}));
-    diagnosisRuleList.push_back(Rule(7, {{"heart_palpitations", "yes"}}, {"diagnosis", "Possible Heart Arrhythmias"}));
-    diagnosisRuleList.push_back(Rule(8, {{"heart_palpitations", "no"}}, {"go_to_node", "10"}));
-    diagnosisRuleList.push_back(Rule(9, {{"neck_or_jaw_pain", "yes"}}, {"diagnosis", "Possible Coronary Artery Disease"}));
-    diagnosisRuleList.push_back(Rule(10, {{"neck_or_jaw_pain", "no"}}, {"diagnosis", "Inconclusive"}));
-    diagnosisRuleList.push_back(Rule(11, {{"fainting_spells", "yes"}}, {"diagnosis", "Possible Heart Valve Disease"}));
-    diagnosisRuleList.push_back(Rule(12, {{"fainting_spells", "no"}}, {"go_to_node", "8"}));
-    diagnosisRuleList.push_back(Rule(13, {{"swelling_in_legs_or_fatigue", "yes"}}, {"go_to_node", "9"}));
-    diagnosisRuleList.push_back(Rule(14, {{"swelling_in_legs_or_fatigue", "no"}}, {"diagnosis", "Inconclusive"}));
-    diagnosisRuleList.push_back(Rule(15, {{"chest_fluttering", "yes"}}, {"diagnosis", "Possible Heart Arrhythmias"}));
-    diagnosisRuleList.push_back(Rule(16, {{"chest_fluttering", "no"}}, {"diagnosis", "Inconclusive"}));
-    diagnosisRuleList.push_back(Rule(17, {{"fatigue_quickly_on_exertion", "yes"}}, {"diagnosis", "Consider Cardiomyopathy or Congenital Heart Defects"}));
-    diagnosisRuleList.push_back(Rule(18, {{"fatigue_quickly_on_exertion", "no"}}, {"diagnosis", "Inconclusive"}));
-    diagnosisRuleList.push_back(Rule(19, {{"swelling_or_cyanosis", "yes"}}, {"diagnosis", "Swelling: Consider Cardiomyopathy, Cyanosis: Consider Congenital Heart Defects"}));
-    diagnosisRuleList.push_back(Rule(20, {{"swelling_or_cyanosis", "no"}}, {"diagnosis", "Inconclusive"}));
+    // diagnosisRuleList.push_back(Rule(1, {{"chest_pain", "yes"}}, {"go_to_node", "2"}));
+    // diagnosisRuleList.push_back(Rule(2, {{"chest_pain", "no"}}, {"go_to_node", "3"}));
+    // diagnosisRuleList.push_back(Rule(3, {{"shortness_of_breath", "yes"}}, {"go_to_node", "4"}));
+    // diagnosisRuleList.push_back(Rule(4, {{"shortness_of_breath", "no"}}, {"go_to_node", "5"}));
+    // diagnosisRuleList.push_back(Rule(5, {{"dizziness_or_fainting", "yes"}}, {"go_to_node", "6"}));
+    // diagnosisRuleList.push_back(Rule(6, {{"dizziness_or_fainting", "no"}}, {"go_to_node", "7"}));
+    // diagnosisRuleList.push_back(Rule(7, {{"heart_palpitations", "yes"}}, {"diagnosis", "Possible Heart Arrhythmias"}));
+    // diagnosisRuleList.push_back(Rule(8, {{"heart_palpitations", "no"}}, {"go_to_node", "10"}));
+    // diagnosisRuleList.push_back(Rule(9, {{"neck_or_jaw_pain", "yes"}}, {"diagnosis", "Possible Coronary Artery Disease"}));
+    // diagnosisRuleList.push_back(Rule(10, {{"neck_or_jaw_pain", "no"}}, {"diagnosis", "Inconclusive"}));
+    // diagnosisRuleList.push_back(Rule(11, {{"fainting_spells", "yes"}}, {"diagnosis", "Possible Heart Valve Disease"}));
+    // diagnosisRuleList.push_back(Rule(12, {{"fainting_spells", "no"}}, {"go_to_node", "8"}));
+    // diagnosisRuleList.push_back(Rule(13, {{"swelling_in_legs_or_fatigue", "yes"}}, {"go_to_node", "9"}));
+    // diagnosisRuleList.push_back(Rule(14, {{"swelling_in_legs_or_fatigue", "no"}}, {"diagnosis", "Inconclusive"}));
+    // diagnosisRuleList.push_back(Rule(15, {{"chest_fluttering", "yes"}}, {"diagnosis", "Possible Heart Arrhythmias"}));
+    // diagnosisRuleList.push_back(Rule(16, {{"chest_fluttering", "no"}}, {"diagnosis", "Inconclusive"}));
+    // diagnosisRuleList.push_back(Rule(17, {{"fatigue_quickly_on_exertion", "yes"}}, {"diagnosis", "Consider Cardiomyopathy or Congenital Heart Defects"}));
+    // diagnosisRuleList.push_back(Rule(18, {{"fatigue_quickly_on_exertion", "no"}}, {"diagnosis", "Inconclusive"}));
+    // diagnosisRuleList.push_back(Rule(19, {{"swelling_or_cyanosis", "yes"}}, {"diagnosis", "Swelling: Consider Cardiomyopathy, Cyanosis: Consider Congenital Heart Defects"}));
+    // diagnosisRuleList.push_back(Rule(20, {{"swelling_or_cyanosis", "no"}}, {"diagnosis", "Inconclusive"}));
     
-    // // Additional rules to ensure proper chaining
-    // diagnosisRuleList.push_back(Rule(21, {{"node_1_answer", "yes"}}, {"go_to_node", "2"}));
-    // diagnosisRuleList.push_back(Rule(22, {{"node_1_answer", "no"}}, {"go_to_node", "3"}));
-    // diagnosisRuleList.push_back(Rule(23, {{"node_2_answer", "yes"}}, {"go_to_node", "4"}));
-    // diagnosisRuleList.push_back(Rule(24, {{"node_2_answer", "no"}}, {"go_to_node", "5"}));
-    // diagnosisRuleList.push_back(Rule(25, {{"node_3_answer", "yes"}}, {"go_to_node", "6"}));
-    // diagnosisRuleList.push_back(Rule(26, {{"node_3_answer", "no"}}, {"go_to_node", "7"}));
-    // diagnosisRuleList.push_back(Rule(27, {{"node_4_answer", "yes"}}, {"diagnosis", "Possible Heart Arrhythmias"}));
-    // diagnosisRuleList.push_back(Rule(28, {{"node_4_answer", "no"}}, {"go_to_node", "10"}));
-    // diagnosisRuleList.push_back(Rule(29, {{"node_6_answer", "yes"}}, {"diagnosis", "Possible Heart Valve Disease"}));
-    // diagnosisRuleList.push_back(Rule(30, {{"node_6_answer", "no"}}, {"go_to_node", "8"}));
+    // Rule 1: Possible Heart Arrhythmias (Palpitations)
+    diagnosisRuleList.push_back(
+        Rule(1, 
+            {{"Chest pain", "Yes"}, {"Shortness of breath", "Yes"}, {"Heart palpitations", "Yes"}},
+            {"Diagnosis", "Possible Heart Arrhythmias"}
+        )
+    );
+
+    // Rule 2: Possible Coronary Artery Disease
+    diagnosisRuleList.push_back(
+        Rule(2, 
+            {{"Chest pain", "Yes"}, {"Shortness of breath", "No"}, {"Pain in neck or jaw", "Yes"}},
+            {"Diagnosis", "Possible Coronary Artery Disease"}
+        )
+    );
+
+    // Rule 3: Possible Heart Valve Disease
+    diagnosisRuleList.push_back(
+        Rule(3, 
+            {{"Chest pain", "No"}, {"Dizziness or fainting", "Yes"}, {"Fainting spells", "Yes"}},
+            {"Diagnosis", "Possible Heart Valve Disease"}
+        )
+    );
+
+    // Rule 4: Possible Heart Arrhythmias (Fainting and Fluttering)
+    diagnosisRuleList.push_back(
+        Rule(4, 
+            {{"Chest pain", "No"}, {"Dizziness or fainting", "Yes"}, {"Fainting spells", "No"}, {"Fluttering sensation", "Yes"}},
+            {"Diagnosis", "Possible Heart Arrhythmias"}
+        )
+    );
+
+    // Rule 5: Consider Cardiomyopathy or Congenital Heart Defects (Exertion Fatigue)
+    diagnosisRuleList.push_back(
+        Rule(5, 
+            {{"Chest pain", "No"}, {"Dizziness or fainting", "No"}, {"Swelling in legs or fatigue", "Yes"}, {"Fatigue upon exertion", "Yes"}},
+            {"Diagnosis", "Consider Cardiomyopathy or Congenital Heart Defects"}
+        )
+    );
+
+    // Rule 6: Swelling - Cardiomyopathy / Cyanosis - Congenital Heart Defects
+    diagnosisRuleList.push_back(
+        Rule(6, 
+            {{"Chest pain", "No"}, {"Dizziness or fainting", "No"}, {"Swelling in legs or fatigue", "No"}, {"Swelling in legs", "Yes"}},
+            {"Diagnosis", "Consider Cardiomyopathy or Congenital Heart Defects"}
+        )
+    );
+
+    // Rule 7: Inconclusive - Shortness of Breath No, Neck Pain No
+    diagnosisRuleList.push_back(
+        Rule(7, 
+            {{"Chest pain", "Yes"}, {"Shortness of breath", "No"}, {"Pain in neck or jaw", "No"}},
+            {"Diagnosis", "Inconclusive"}
+        )
+    );
+
+    // Rule 8: Inconclusive - Fainting spells No, Fluttering No
+    diagnosisRuleList.push_back(
+        Rule(8, 
+            {{"Chest pain", "No"}, {"Dizziness or fainting", "Yes"}, {"Fainting spells", "No"}, {"Fluttering sensation", "No"}},
+            {"Diagnosis", "Inconclusive"}
+        )
+    );
+
+    // Rule 9: Inconclusive - Swelling in legs or fatigue No
+    diagnosisRuleList.push_back(
+        Rule(9, 
+            {{"Chest pain", "No"}, {"Dizziness or fainting", "No"}, {"Swelling in legs or fatigue", "No"}},
+            {"Diagnosis", "Inconclusive"}
+        )
+    );
+    
 
 
     // Treatment rules (Forward Chaining)
@@ -126,11 +186,17 @@ void initialize_knowledge_base() {
     // diagnosisRules["Dizziness"] = "Heart Valve Disease";
     
     // // Clause variable list for backward chaining
-    // clauseVariableList["1"] = {"Chest Pain", "Shortness of Breath"};
+    clauseVariableList["1"] = {"Chest Pain"};
+    //, "Shortness of Breath"};
     // clauseVariableList["2"] = {"Dizziness", "Fainting"};
     // clauseVariableList["3"] = {"Palpitations"};
     // clauseVariableList["4"] = {"Swelling", "Cyanosis"};
-    
+
+    for (int i = 0; i < diagnosisRuleList.size(); ++i) {
+        // map<string, vector<int>> conclusionMap; // Maps conclusion variable to rule numbers
+
+        conclusionMap[diagnosisRuleList[i].conclusion.first].push_back(i);
+    }
     // 
     // treatmentRules["Coronary Artery Disease"] = "Lifestyle changes, Medications, Surgery";
     // treatmentRules["Heart Arrhythmias"] = "Anti-arrhythmic Drugs, Pacemaker";
@@ -140,33 +206,23 @@ void initialize_knowledge_base() {
 
 // Diagnosis using backward chaining
 string diagnosis() {
-    string goalVariable = "diagnosis";  // Diagnosis is the ultimate goal
+    string goalVariable = "Diagnosis";  // Diagnosis is the ultimate goal
 
-    string userInput;
-
-    cout << "Do you have chest_pain? (yes/no): ";
-    cin >> userInput;
-
-    while(userInput != "yes" && userInput != "no") 
-    {
-        cout << "Invalid input. Please enter 'yes' or 'no'." << endl;
-        cin >> userInput;
-    }
-    
-    derivedGlobalVariables["chest_pain"] = userInput;
-
-    // Call backward chaining to determine the diagnosis
     processBC(goalVariable);
 
-    if (derivedGlobalVariables.find(goalVariable) != derivedGlobalVariables.end()) {
+    if (derivedGlobalVariables.find(goalVariable) != derivedGlobalVariables.end()) 
+    {
         return derivedGlobalVariables[goalVariable];
-    } else {
+    } 
+    else 
+    {
         return "No conclusion for diagnosis.";
     }
 }
 
 // Process function for backward chaining
-void processBC(string variable) {
+void processBC(string variable) 
+{
     // Search for conclusion
 
     // Loop
@@ -182,52 +238,69 @@ void processBC(string variable) {
           // conclusion = diagnosisRules[to_string(ruleNumber)]
 
     // Perform backward chaining on the given goal variable
-    if (derivedGlobalVariables.find(variable) == derivedGlobalVariables.end()) {
+    if (derivedGlobalVariables.find(variable) == derivedGlobalVariables.end()) 
+    {
 
         bool foundConclusion = searchConBC(variable);
 
-        if (!foundConclusion) {
+        if (!foundConclusion) 
+        {
             cout << "Goal cannot be determined for: " << variable << endl;
         }
     }
 }
 
 // Search the conclusion list for a matching variable
-bool searchConBC(string variable) {
-    for (const auto& rule : diagnosisRuleList) {
-        if (rule.conclusion.first == variable) {
+bool searchConBC(string variable) 
+{
+
+    // FIX: We're searching for a connclusion w/ "diagnosis" 
+    for (const auto& rule : diagnosisRuleList) 
+    {
+
+        if (rule.conclusion.first == variable) 
+        {
             // We found a rule whose conclusion is the goal variable
             bool valid = validateRi(rule);
-            if (valid) {
-                derivedGlobalVariables[variable] = rule.conclusion.second;
+
+            if (valid) 
+            {
+                derivedGlobalVariables[rule.conclusion.first] = rule.conclusion.second;
                 return true;
             }
         }
     }
+
+    cout << "searchConBC is returning false " << variable << endl;
     return false;  // If no rule leads to the variable
 }
 
-// Convert rule number to clause number
-int ruleToClauseBC(int ruleNumber) {
-    return 4 * (ruleNumber - 1) + 1;
-}
-
 // Validate the rule based on variables
-bool validateRi(const Rule& rule) {
+bool validateRi(const Rule& rule) 
+{
 
+    cout << "Validating Rule " << rule.number << "..." << endl;
     // Check if the conditions for this rule are met
-    for (const auto& condition : rule.conditions) {
+    for (const auto& condition : rule.conditions) 
+    {
+
+        cout << "Checking condition: " << condition.first << " = " << condition.second << endl;
 
         const string& variable = condition.first;
         const string& expectedValue = condition.second;
 
         // If the variable is not yet instantiated, we need to process it
-        if (derivedGlobalVariables.find(variable) == derivedGlobalVariables.end()) {
-            updateVL(rule.conditions);
+        if (derivedGlobalVariables.find(variable) == derivedGlobalVariables.end()) 
+        {
+
+            updateVL({{variable, expectedValue}});
+
+            cout << "Updated variable list with " << variable << " = " << derivedGlobalVariables[variable] << endl << endl << endl;
         }
 
         // If the condition is not satisfied, the rule is invalid
-        if (derivedGlobalVariables[variable] != expectedValue) {
+        if (derivedGlobalVariables[variable] != expectedValue) 
+        {
             return false;
         }
     }
@@ -235,21 +308,27 @@ bool validateRi(const Rule& rule) {
 }
 
 // Ask user for values of variables in the clause and update the variable list
-void updateVL(const vector<pair<string, string>>& conditions) {
-    for (const auto& condition : conditions) {
+void updateVL(const vector<pair<string, string>>& conditions) 
+{
+    for (const auto& condition : conditions) 
+    {
         const string& var = condition.first;
 
-        if (derivedGlobalVariables.find(var) == derivedGlobalVariables.end()) {
+        if (derivedGlobalVariables.find(var) == derivedGlobalVariables.end()) 
+        {
             string userInput;
             while (true) {
                 cout << "Do you have " << var << "? (yes/no): ";
                 cin >> userInput;
 
                 // Validate user input
-                if (userInput == "yes" || userInput == "no") {
+                if (userInput == "Yes" || userInput == "No") 
+                {
                     derivedGlobalVariables[var] = userInput;
                     break;
-                } else {
+                } 
+                else 
+                {
                     cout << "Invalid input. Please enter 'yes' or 'no'." << endl;
                 }
             }
