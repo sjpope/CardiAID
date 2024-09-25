@@ -5,6 +5,7 @@
 #include <map>
 #include <queue>
 
+// g++ -o final.exe final.cpp
 
 using namespace std;
 
@@ -45,10 +46,11 @@ string diagnosis();
 void processBC(string variable);
 bool searchConBC(string variable);
 int ruleToClauseBC(int ruleNumber);
+bool validateRi(const Rule& rule);
+bool validateRi(const Rule& rule);
 
 // Used for both algorithms
-void updateVL(int clauseNumber);
-bool validateRi(int ruleNumber, string& conclusion);
+void updateVL(const vector<pair<string, string>>& conditions);
 
 // Forward Chaining 
 void treatment(string diagnosis);
