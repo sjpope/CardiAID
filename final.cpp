@@ -43,7 +43,7 @@ void initialize_knowledge_base();
 // Backward Chaining
 string diagnosis();
 void processBC(string variable);
-void searchConBC(string variable);
+bool searchConBC(string variable);
 int ruleToClauseBC(int ruleNumber);
 
 // Used for both algorithms
