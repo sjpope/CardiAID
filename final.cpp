@@ -48,7 +48,7 @@ int ruleToClauseBC(int ruleNumber);
 
 // Used for both algorithms
 void updateVL(int clauseNumber);
-void validateRi(int ruleNumber, string& conclusion);
+bool validateRi(int ruleNumber, string& conclusion);
 
 // Forward Chaining 
 void treatment(string diagnosis);
