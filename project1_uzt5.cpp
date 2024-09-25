@@ -10,37 +10,42 @@ using namespace std;
 
 // Structure to represent a variable
 struct Variable {
-    std::string name;
-    std::string value;
+    string name;
+    string value;
     bool instantiated;
 
-    Variable(std::string n) : name(n), value(""), instantiated(false) {}
+    Variable(string n) : name(n), value(""), instantiated(false) {}
 };
 
 // Structure to represent a rule
 struct Rule {
     int number;
-    std::vector<std::pair<std::string, std::string>> conditions; // (variable, expected value)
-    std::pair<std::string, std::string> conclusion; // (variable, value)
+    vector<pair<string, string>> conditions; // (variable, expected value)
+    pair<string, string> conclusion; // (variable, value)
 
-    Rule(int num, std::vector<std::pair<std::string, std::string>> conds, std::pair<std::string, std::string> concl)
+    Rule(int num, vector<pair<string, string>> conds, pair<string, string> concl)
         : number(num), conditions(conds), conclusion(concl) {}
 };
 
 // Global variables and data structures
-std::vector<Variable> variableList;
-std::map<std::string, Variable*> variableMap;
-std::vector<Rule> diagnosisRuleList;
-std::vector<Rule> treatmentRuleList;
-std::map<std::string, std::vector<int>> conclusionMap; // Maps conclusion variable to rule numbers
-std::vector<std::string> derivedConclusions; // For forward chaining
-std::queue<std::string> globalConclusionQueue; // For forward chaining
+vector<Variable> variableList;
+map<string, Variable*> variableMap;
+vector<Rule> diagnosisRuleList;
+vector<Rule> treatmentRuleList;
+map<string, vector<int>> conclusionMap; // Maps conclusion variable to rule numbers
+vector<string> derivedConclusions; // For forward chaining
+queue<string> globalConclusionQueue; // For forward chaining
 
 // Function prototypes
 void initializeDiagnosis();
 void initializeTreatment();
 void backwardChaining();
-void forwardChaining(std::string diagnosis);
+void processFC(string diagnosis);
+
+void initialize_knowledge_base();
+void diagnosis();
+void treatment();
+
 
 void BC_Process(std::string variable);
 void BC_update_VL(int Ri);
@@ -58,15 +63,19 @@ Variable* getVariable(std::string varName);
 void resetVariables();
 
 int main() {
+    // diagnosis();
+    cout << "\nCardiAID: " << "" << "\n" << endl;
+
+    // Identify the Goal variable (the variable whose value needs to be determined)
     initializeDiagnosis();
     backwardChaining();
 
     // After processing, check if diagnosis is instantiated
     Variable* diagnosisVar = variableMap["diagnosis"];
     if (diagnosisVar->instantiated && !diagnosisVar->value.empty()) {
-        std::cout << "\nDiagnosis: " << diagnosisVar->value << "\n" << std::endl;
+        cout << "\nDiagnosis: " << diagnosisVar->value << "\n" << endl;
         initializeTreatment();
-        forwardChaining(diagnosisVar->value);
+        processFC(diagnosisVar->value);
     } else {
         std::cout << "Unable to determine the diagnosis. Further medical evaluation is recommended." << std::endl;
     }
@@ -75,9 +84,9 @@ int main() {
 }
 
 // Initialize variables and rules for diagnosis
-void initializeDiagnosis() {
+void diagnosis() {
     // Create variables (symptoms and diagnosis)
-    std::vector<std::string> symptoms = {
+    vector<string> symptoms = {
         "chest_pain", "shortness_of_breath", "heart_palpitations", "neck_or_jaw_pain",
         "dizziness", "fainting_spells", "swelling_in_legs", "fatigue",
         "fluttering_in_chest", "cyanosis", "rapid_heartbeat", "nausea",
@@ -134,6 +143,8 @@ void initializeDiagnosis() {
     for (int i = 0; i < diagnosisRuleList.size(); ++i) {
         conclusionMap[diagnosisRuleList[i].conclusion.first].push_back(i);
     }
+
+
 }
 
 // Backward Chaining Functions
@@ -268,7 +279,7 @@ void initializeTreatment() {
 }
 
 // Forward Chaining Functions
-void forwardChaining(std::string givenVariable) {
+void processFC(std::string givenVariable) {
     FC_main(givenVariable);
     // Print all derived conclusions
     std::cout << "Treatment Recommendations:\n";
