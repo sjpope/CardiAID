@@ -141,11 +141,9 @@ string diagnosis() {
     processBC(goalVariable);
 
     if (derivedGlobalVariables.find(goalVariable) != derivedGlobalVariables.end()) {
-        cout << "Derived Diagnosis: " << derivedGlobalVariables[goalVariable] << endl;
         return derivedGlobalVariables[goalVariable];
     } else {
-        cout << "No conclusion for " << goalVariable << endl;
-        return "Diagnosis could not be determined.";
+        return "No conclusion for diagnosis.";
     }
 }
 
@@ -167,7 +165,9 @@ void processBC(string variable) {
 
     // Perform backward chaining on the given goal variable
     if (derivedGlobalVariables.find(variable) == derivedGlobalVariables.end()) {
+
         bool foundConclusion = searchConBC(variable);
+
         if (!foundConclusion) {
             cout << "Goal cannot be determined for: " << variable << endl;
         }
@@ -176,6 +176,7 @@ void processBC(string variable) {
 
 // Search the conclusion list for a matching variable
 bool searchConBC(string variable) {
+
     for (const auto& rule : diagnosisRuleList) {
         if (rule.conclusion.first == variable) {
             // We found a rule whose conclusion is the goal variable
@@ -196,14 +197,16 @@ int ruleToClauseBC(int ruleNumber) {
 
 // Validate the rule based on variables
 bool validateRi(const Rule& rule) {
+
     // Check if the conditions for this rule are met
     for (const auto& condition : rule.conditions) {
+
         const string& variable = condition.first;
         const string& expectedValue = condition.second;
 
         // If the variable is not yet instantiated, we need to process it
         if (derivedGlobalVariables.find(variable) == derivedGlobalVariables.end()) {
-            processBC(variable);
+            updateVL(rule.conditions);
         }
 
         // If the condition is not satisfied, the rule is invalid
@@ -216,13 +219,27 @@ bool validateRi(const Rule& rule) {
 
 // Ask user for values of variables in the clause and update the variable list
 void updateVL(const vector<pair<string, string>>& conditions) {
+
     for (const auto& condition : conditions) {
+        
         const string& var = condition.first;
+
         if (derivedGlobalVariables.find(var) == derivedGlobalVariables.end()) {
-            cout << "Enter value for " << var << ": ";
-            string value;
-            cin >> value;
-            derivedGlobalVariables[var] = value;
+
+            string userInput;
+
+            while (true) {
+                cout << "Do you have " << var << "? (yes/no): ";
+                cin >> userInput;
+
+                // Validate user input
+                if (userInput == "yes" || userInput == "no") {
+                    derivedGlobalVariables[var] = userInput;
+                    break;
+                } else {
+                    cout << "Invalid input. Please enter 'yes' or 'no'." << endl;
+                }
+            }
         }
     }
 }
