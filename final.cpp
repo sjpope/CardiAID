@@ -66,8 +66,13 @@ int main() {
 
     // Begin Diagnosis using Backward Chaining
     cout << "Starting Diagnosis..." << endl;
-    string disease = diagnosis();
+    string result = diagnosis();
 
+    if (result == "Inconclusive") {
+        cout << "Diagnosis: Inconclusive" << endl;
+    } else {
+        cout << "Diagnosis: " << result << endl;
+    }
     // Begin Treatment using Forward Chaining
 
 
@@ -98,17 +103,17 @@ void initialize_knowledge_base() {
     diagnosisRuleList.push_back(Rule(19, {{"swelling_or_cyanosis", "yes"}}, {"diagnosis", "Swelling: Consider Cardiomyopathy, Cyanosis: Consider Congenital Heart Defects"}));
     diagnosisRuleList.push_back(Rule(20, {{"swelling_or_cyanosis", "no"}}, {"diagnosis", "Inconclusive"}));
     
-    // Additional rules to ensure proper chaining
-    diagnosisRuleList.push_back(Rule(21, {{"node_1_answer", "yes"}}, {"go_to_node", "2"}));
-    diagnosisRuleList.push_back(Rule(22, {{"node_1_answer", "no"}}, {"go_to_node", "3"}));
-    diagnosisRuleList.push_back(Rule(23, {{"node_2_answer", "yes"}}, {"go_to_node", "4"}));
-    diagnosisRuleList.push_back(Rule(24, {{"node_2_answer", "no"}}, {"go_to_node", "5"}));
-    diagnosisRuleList.push_back(Rule(25, {{"node_3_answer", "yes"}}, {"go_to_node", "6"}));
-    diagnosisRuleList.push_back(Rule(26, {{"node_3_answer", "no"}}, {"go_to_node", "7"}));
-    diagnosisRuleList.push_back(Rule(27, {{"node_4_answer", "yes"}}, {"diagnosis", "Possible Heart Arrhythmias"}));
-    diagnosisRuleList.push_back(Rule(28, {{"node_4_answer", "no"}}, {"go_to_node", "10"}));
-    diagnosisRuleList.push_back(Rule(29, {{"node_6_answer", "yes"}}, {"diagnosis", "Possible Heart Valve Disease"}));
-    diagnosisRuleList.push_back(Rule(30, {{"node_6_answer", "no"}}, {"go_to_node", "8"}));
+    // // Additional rules to ensure proper chaining
+    // diagnosisRuleList.push_back(Rule(21, {{"node_1_answer", "yes"}}, {"go_to_node", "2"}));
+    // diagnosisRuleList.push_back(Rule(22, {{"node_1_answer", "no"}}, {"go_to_node", "3"}));
+    // diagnosisRuleList.push_back(Rule(23, {{"node_2_answer", "yes"}}, {"go_to_node", "4"}));
+    // diagnosisRuleList.push_back(Rule(24, {{"node_2_answer", "no"}}, {"go_to_node", "5"}));
+    // diagnosisRuleList.push_back(Rule(25, {{"node_3_answer", "yes"}}, {"go_to_node", "6"}));
+    // diagnosisRuleList.push_back(Rule(26, {{"node_3_answer", "no"}}, {"go_to_node", "7"}));
+    // diagnosisRuleList.push_back(Rule(27, {{"node_4_answer", "yes"}}, {"diagnosis", "Possible Heart Arrhythmias"}));
+    // diagnosisRuleList.push_back(Rule(28, {{"node_4_answer", "no"}}, {"go_to_node", "10"}));
+    // diagnosisRuleList.push_back(Rule(29, {{"node_6_answer", "yes"}}, {"diagnosis", "Possible Heart Valve Disease"}));
+    // diagnosisRuleList.push_back(Rule(30, {{"node_6_answer", "no"}}, {"go_to_node", "8"}));
 
 
     // Treatment rules (Forward Chaining)
@@ -136,6 +141,19 @@ void initialize_knowledge_base() {
 // Diagnosis using backward chaining
 string diagnosis() {
     string goalVariable = "diagnosis";  // Diagnosis is the ultimate goal
+
+    string userInput;
+
+    cout << "Do you have chest_pain? (yes/no): ";
+    cin >> userInput;
+
+    while(userInput != "yes" && userInput != "no") 
+    {
+        cout << "Invalid input. Please enter 'yes' or 'no'." << endl;
+        cin >> userInput;
+    }
+    
+    derivedGlobalVariables["chest_pain"] = userInput;
 
     // Call backward chaining to determine the diagnosis
     processBC(goalVariable);
@@ -176,7 +194,6 @@ void processBC(string variable) {
 
 // Search the conclusion list for a matching variable
 bool searchConBC(string variable) {
-
     for (const auto& rule : diagnosisRuleList) {
         if (rule.conclusion.first == variable) {
             // We found a rule whose conclusion is the goal variable
@@ -219,15 +236,11 @@ bool validateRi(const Rule& rule) {
 
 // Ask user for values of variables in the clause and update the variable list
 void updateVL(const vector<pair<string, string>>& conditions) {
-
     for (const auto& condition : conditions) {
-        
         const string& var = condition.first;
 
         if (derivedGlobalVariables.find(var) == derivedGlobalVariables.end()) {
-
             string userInput;
-
             while (true) {
                 cout << "Do you have " << var << "? (yes/no): ";
                 cin >> userInput;
