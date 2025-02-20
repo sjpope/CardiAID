@@ -5,7 +5,7 @@
 #include <map>
 #include <queue>
 
-// g++ -o final.exe final.cpp
+// g++ -o project1_uzt5.exe project1_uzt5.cpp
 
 using namespace std;
 
